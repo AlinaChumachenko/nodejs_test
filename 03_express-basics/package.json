@@ -15,7 +15,6 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-promise": "^6.1.1",
-    // "husky": "^4.3.8",
     "lint-staged": "^13.1.2"
   },
   "lint-staged": {
@@ -23,11 +22,8 @@
       "eslint"
     ]
   },
-  // "husky": {
-  //   "hooks": {
-  //     "pre-commit": "lint-staged"
-  //   }
-  // },
+  
+  
   "dependencies": {
     "cors": "^2.8.5",
     "uuid": "^10.0.0"
