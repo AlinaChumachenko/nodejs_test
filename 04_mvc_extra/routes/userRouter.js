@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { createUser, getOneUser, getUsersList } from '../controllers/userController.js';
-// import * as userController from '../controllers/userController.js';
+import { chekUserId } from '../middleware/userMiddleware.js';
 
 const router = Router(); // запускаємо роутер
 
@@ -18,8 +18,20 @@ const router = Router(); // запускаємо роутер
 
 router.post('/', createUser);
 router.get('/', getUsersList);
-router.get('/:id', getOneUser);
-router.patch('/:id');
-router.delete('/:id');
+router.get('/:id', chekUserId, getOneUser);
+// router.patch('/:id', chekUserId, updateUser);
+// router.delete('/:id', chekUserId, deleteUser);
+
+// Варіант з маршрутами--------------------------------------------------------
+// router
+//   .route('/')
+//   .post(createUser)
+//   .get(getUsersList);
+// router.use('/:id', chekUserId);
+// router
+//   .route('/:id')
+//   .get(getOneUser)
+//   .patch(updateUser)
+//   .delete(deleteUser);
 
 export default router;
