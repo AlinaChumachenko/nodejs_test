@@ -1,5 +1,1 @@
-import userRouter from './userRouter';
-
-export default {
-    userRouter,
-}
+export { router as userRouter } from './userRouter.js';
