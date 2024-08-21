@@ -1,5 +1,6 @@
 import { model, Schema } from 'mongoose';
-import { userRoles } from '../constants/userRoles.js';
+
+import { userRoles } from '../constants/index.js';
 
 const userSchema = new Schema(
   {
@@ -22,12 +23,15 @@ const userSchema = new Schema(
       type: String,
       enum: Object.values(userRoles),
       default: userRoles.USER,
-
+    },
+    hidden: {
+      type: Boolean,
+      default: false,
     },
   },
   {
-    timestamps: true, // час створення та оновлення обьекту
-    versionKey: false, // відключення властивості "__v"
+    timestamps: true,
+    versionKey: false,
   }
 );
 

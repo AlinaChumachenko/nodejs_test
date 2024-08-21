@@ -1,37 +1,38 @@
 import { Router } from 'express';
-import { createUser, getOneUser, getUsersList } from '../controllers/userController.js';
-import { checkCreateUserData, chekUserId } from '../middleware/userMiddleware.js';
 
-const router = Router(); // запускаємо роутер
+import { userController } from '../controllers/index.js';
+import { userMiddleware } from '../middlewares/index.js';
+
+const router = Router();
 
 /**
- * HTTP methods-----------------------------------------------------------------
- * GET, POST, PUT, PATCH, DELETE
- * REST API (CRUD operations)= НАБІР МЕТОДОЛОГІЙ, ПРАВИЛ, РЕКОМЕНДАЦІЙ, ЯК БУДУВАТИ МЕТОДОЛОГІЮ ЕНДПОІНТІВ
- * POST             /users              - додати нового користувача
- * GET              /users              - отримати всіх користувачів
- * GET              /users/<userID>     - отримати конкретного користувача
- * PATCH(PUT)       /users/<userID>     - оновити конкретного користувача
- * DELETE           /users/<userID>     - видалити конкретного користувача
-
+ * HTTP methods ================
+ * POST, GET, PUT, PATCH, DELETE
+ *
+ * REST API (CRUD operations)
+ * POST         /users            - user creation
+ * GET          /users            - get users list
+ * GET          /users/<userID>   - get one user
+ * PATCH(PUT)   /users/<userID>   - update one user
+ * DELETE       /users/<userID>   - delete one user
  */
 
-router.post('/', checkCreateUserData, createUser);
-router.get('/', getUsersList);
-router.get('/:id', chekUserId, getOneUser);
-// router.patch('/:id', chekUserId, updateUser);
-// router.delete('/:id', chekUserId, deleteUser);
+// router.post('/', userController.createUser);
+// router.get('/', userController.getUsersList);
+// router.get('/:id', userMiddleware.checkUserId, userController.getOneUser);
+// router.patch('/:id', userMiddleware.checkUserId, userController.updateUser);
+// router.delete('/:id', userMiddleware.checkUserId, userController.deleteUser);
 
-// Варіант з маршрутами--------------------------------------------------------
-// router
-//   .route('/')
-//   .post(createUser)
-//   .get(getUsersList);
-// router.use('/:id', chekUserId);
-// router
-//   .route('/:id')
-//   .get(getOneUser)
-//   .patch(updateUser)
-//   .delete(deleteUser);
+router
+  .route('/')
+  .post(userMiddleware.checkCreateUserData, userController.createUser)
+  .get(userController.getUsersList);
+
+router.use('/:id', userMiddleware.checkUserId);
+router
+  .route('/:id')
+  .get(userController.getOneUser)
+  .patch(userMiddleware.checkUpdateUserData, userController.updateUser)
+  .delete(userController.deleteUser);
 
 export { router };

@@ -1,7 +1,7 @@
 const userRoles = {
   ADMIN: 'admin',
   USER: 'user',
-  MODERATOR: 'moderator'
+  MODERATOR: 'moderator',
 };
 
 export { userRoles };

@@ -1,6 +1,6 @@
-// const serverConfig = {
-//   mongoURL: process.env.MONGO_URL ?? 'mongodb://localhost:27017',
-//   port: process.env.PORT ?? 4000
-// };
+const serverConfig = {
+  mongoUrl: process.env.MONGO_URL ?? 'mongodb://localhost:27017',
+  port: process.env.PORT ?? 4000,
+};
 
-// export { serverConfig };
+export { serverConfig };

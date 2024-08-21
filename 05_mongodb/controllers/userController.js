@@ -1,37 +1,48 @@
-// import { v4 } from 'uuid'; // Для генерації унікального ідентифікатора
-import { promises as fs } from 'fs'; // для роботи з файлами , наприклад збереження у файл
-
-// import HttpError from '../utils/httpError.js';
-import catchAsync from '../utils/catchAsync.js';
-// import createUserDataValidator from '../utils/userValidators.js';
+import { catchAsync } from '../utils/index.js';
 import { User } from '../models/userModel.js';
 
-const createUser = catchAsync(async (req, res) => {
+export const createUser = catchAsync(async (req, res) => {
   const newUser = await User.create(req.body);
-  newUser.password = undefined; // щоб не повертати в респонсі пароль.секретні данні.
+
+  newUser.password = undefined;
+
   res.status(201).json({
     msg: 'Success!',
     user: newUser,
   });
 });
 
-const getUsersList = catchAsync(async (req, res) => {
-  const usersDB = await fs.readFile('data.json'); // поверне buffer
-  const users = JSON.parse(usersDB); // поверне обєкт
+export const getUsersList = catchAsync(async (req, res) => {
+  const users = await User.find();
+  // const users = await User.find().select('+password');
+  // const users = await User.find().select('-email');
+  // const users = await User.find().select('name email');
+
   res.status(201).json({
     msg: 'Success!',
     users,
   });
 });
 
-const getOneUser = (req, res) => {
-// console.log(req.params);
+export const getOneUser = catchAsync(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
   res.status(201).json({
     msg: 'Success!',
-    // user: users.find(user => user.id === req.params.id),
-    user: req.user,
-    time: req.time
+    user,
   });
-};
+});
 
-export { createUser, getUsersList, getOneUser };
+export const updateUser = catchAsync(async (req, res) => {
+  const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
+  res.status(200).json({
+    msg: 'Success!',
+    user: updatedUser,
+  });
+});
+
+export const deleteUser = catchAsync(async (req, res) => {
+  await User.findByIdAndDelete(req.params.id);
+  res.sendStatus(204);
+});

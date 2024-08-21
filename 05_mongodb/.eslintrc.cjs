@@ -110,14 +110,14 @@ module.exports = {
     'quote-props': ['error', 'as-needed'],
     radix: 'error',
     'require-await': 'error',
-    'sort-imports': [
-      'error',
-      {
-        ignoreCase: true,
-        ignoreDeclarationSort: true,
-        ignoreMemberSort: false,
-      },
-    ],
+    // 'sort-imports': [
+    //   'error',
+    //   {
+    //     ignoreCase: true,
+    //     ignoreDeclarationSort: true,
+    //     ignoreMemberSort: false,
+    //   },
+    // ],
     'space-before-function-paren': [
       'error',
       {
