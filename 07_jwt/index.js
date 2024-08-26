@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 
 // import './envs/env.js';
 import './configs/dotenvConfig.js';
-import { userRouter } from './routes/index.js';
+import { userRouter, authRouter } from './routes/index.js';
 import { serverConfig } from './configs/serverConfig.js';
 import { globalErrorHandler } from './controllers/errorController.js';
 
@@ -41,6 +41,7 @@ app.use(cors());
 const pathPrefix = '/api/v1';
 
 app.use(`${pathPrefix}/users`, userRouter);
+app.use(`${pathPrefix}/auth`, authRouter);
 
 // Handle not found error
 app.all('*', (req, res) => {
