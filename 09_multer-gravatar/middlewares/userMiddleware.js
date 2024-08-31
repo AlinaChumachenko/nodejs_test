@@ -1,8 +1,7 @@
-// import { Types } from 'mongoose';
 import { catchAsync, HttpError } from '../utils/index.js';
 import { createUserDataValidator, updateUserDataValidator } from '../utils/userValidators.js';
-// import { User } from '../models/userModel.js';
 import { userService } from '../serveces/index.js';
+import { ImageService } from '../serveces/imageService.js';
 
 export const checkCreateUserData = catchAsync(async (req, res, next) => {
   const { value, error } = createUserDataValidator(req.body);
@@ -32,3 +31,36 @@ export const checkUserId = catchAsync(async (req, res, next) => {
 
   next();
 });
+
+// BASIC MULTER USAGE
+// config storage
+
+// const multerStorage = multer.diskStorage({
+//   destination: (req, file, cbk) => { // де ми зберігаємо файл
+//     cbk(null, path.join('public', 'images'));
+//   },
+//   filename: (req, file, cbk) => {
+//     const extension = file.mimetype.split('/')[1]; // 'image/png'
+//     // <userId>-<randomId>.<extension>
+//     cbk(null, `${req.user.id}-${v4()}.${extension}`); // побудова назви\ім'я файлу
+//   },
+// });
+
+// config filter
+// const multerFilter = (req, file, cbk) => {
+//   if (file.mimetype.startsWith('image/')) {
+//     cbk(null, true);
+//   } else {
+//     cbk(new HttpError(400, 'Please, upload only images..'), false);
+// }
+// };
+
+// export const uploadAvatar = multer({
+//   storage: multerStorage,
+//   fileFilter: multerFilter,
+//   limits: {
+//     fileSize: 2 * 1024 * 1024,
+//   }
+// }).single('avatar');
+
+export const uploadAvatar = ImageService.initUploadImageMiddleware('avatar');

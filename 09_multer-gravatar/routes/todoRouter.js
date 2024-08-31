@@ -6,5 +6,6 @@ const router = Router();
 router.use(authMiddleware.protect);
 router.post('/', todoController.cresteTodo); // створити завдання
 router.get('/', todoController.getTodos); // отримати всі завдання
+router.get('/:id', todoController.getOneTodo); // отримати одне завдання
 
 export { router };

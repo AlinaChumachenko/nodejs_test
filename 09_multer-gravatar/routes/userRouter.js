@@ -6,26 +6,9 @@ import { userRoles } from '../constants/index.js';
 
 const router = Router();
 
-/**
- * HTTP methods ================
- * POST, GET, PUT, PATCH, DELETE
- *
- * REST API (CRUD operations)
- * POST         /users            - user creation
- * GET          /users            - get users list
- * GET          /users/<userID>   - get one user
- * PATCH(PUT)   /users/<userID>   - update one user
- * DELETE       /users/<userID>   - delete one user
- */
-
-// router.post('/', userController.createUser);
-// router.get('/', userController.getUsersList);
-// router.get('/:id', userMiddleware.checkUserId, userController.getOneUser);
-// router.patch('/:id', userMiddleware.checkUserId, userController.updateUser);
-// router.delete('/:id', userMiddleware.checkUserId, userController.deleteUser);
 router.use(authMiddleware.protect); // заборонили доступ всім крім залогінених юзерів
 router.get('/me', userController.getMe); // роутер для юзера, щоб отримати інформацію про себе
-router.patch('/me', userController.updateMe);
+router.patch('/me', userMiddleware.uploadAvatar, userController.updateMe);
 
 router.use(authMiddleware.allowFor(userRoles.ADMIN));
 

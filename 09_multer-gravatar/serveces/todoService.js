@@ -1,5 +1,6 @@
 import { userRoles } from '../constants/index.js';
 import { Todo } from '../models/todoModel.js';
+import { HttpError } from '../utils/httpError.js';
 
 export const createTodo = (todoDate, owner) => {
   const { title, description, due } = todoDate;
@@ -73,4 +74,16 @@ export const getTodos = async (query, currentUser) => {
   const total = await Todo.countDocuments(findOptions);
 
   return { todos, total };
+};
+
+export const getTodo = async (id, owner) => {
+  const todo = await Todo.findById(id);
+
+  if (!todo) throw new HttpError(404, 'Todo not found..');
+
+  if (owner.role === userRoles.USER && todo.owner.toString() !== owner.id) {
+    throw new HttpError(404, 'Not found..');
+  }
+
+  return todo;
 };

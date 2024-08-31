@@ -19,3 +19,12 @@ export const getTodos = catchAsync(async (req, res) => {
     todos,
   });
 });
+
+export const getTodo = catchAsync(async (req, res) => {
+  const todo = await todoService.getTodo(req.params.id, req.user);
+
+  res.status(201).json({
+    msg: 'Success!',
+    todo,
+  });
+});

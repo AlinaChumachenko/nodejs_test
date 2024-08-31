@@ -50,3 +50,12 @@ export const getMe = (req, res) => {
     user: req.user
   });
 };
+
+export const updateMe = catchAsync(async (req, res) => {
+  const updatedUser = await userService.updateMe(req.body, req.user, req.file);
+
+  res.status(200).json({
+    msg: 'Success!',
+    user: updatedUser,
+  });
+});

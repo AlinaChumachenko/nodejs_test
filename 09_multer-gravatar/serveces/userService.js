@@ -4,24 +4,16 @@ import { User } from '../models/userModel.js';
 import { HttpError } from '../utils/httpError.js';
 import { userRoles } from '../constants/userRoles.js';
 import * as jwtService from './jwtService.js';
+import { ImageService } from './imageService.js';
 
 export const createUser = async (userData) => {
   const newUser = await User.create(userData);
-  // const newUser = User(userData); // створили обєкт з даними з форми
-  // await newUser.save(); // зберегли обєкт в базу даних
+
   newUser.password = undefined;
   return newUser;
 };
 
 export const getAllUsers = () => User.find();
-// export const getAllUsers = async () => {
-//   const users = await User.find();
-//   // const users = await User.find().select('+password');
-//   // const users = await User.find().select('-email');
-//   // const users = await User.find().select('name email');
-
-//   return users;
-// };
 
 export const getUserById = (id) => User.findById(id);
 
@@ -49,7 +41,6 @@ export const checkUserId = async (id) => {
   if (!isIdValid) throw new HttpError(404, 'User not found..');
 
   const userExists = await User.exists({ _id: id });
-  // const userExists = await User.findById(id).select('_id');
 
   if (!userExists) throw new HttpError(404, 'User not found..');
 };
@@ -72,4 +63,24 @@ export const login = async ({ email, password }) => {
   user.password = undefined;
   const token = jwtService.signToken(user.id);
   return { user, token };
+};
+
+export const updateMe = async (userData, user, file) => {
+  if (file) {
+    // userData.avatar = file.path.replace('public', '');
+    user.avatar = await ImageService.saveImage(
+      file,
+      {
+        maxFileSize: 2,
+        width: 400,
+        height: 400,
+      },
+      'images',
+      'users',
+      user.id
+    );
+  }
+  Object.keys(userData).forEach((key) => {
+    user[key] = userData[key];
+  });
 };
